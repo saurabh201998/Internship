@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Task Manager</h1>
+    </header>
+
+    <main>
+        <!-- Display error message if it exists -->
+        {% if error_message %}
+            <p class="error-message">{{ error_message }}</p>
+        {% endif %}
+
+        <section id="task-list">
+            <h2>Task List</h2>
+            <ul>
+                {% for task in tasks %}
+                    <li>
+                        <h3>{{ task.title }}</h3>
+                        <p>{{ task.description }}</p>
+                        <div class="task-actions">
+                            <form action="/delete/{{ loop.index0 }}" method="post">
+                                <button class="delete-button" type="submit">Delete</button>
+                            </form>
+                            <a class="edit-link" href="/edit/{{ loop.index0 }}">Edit</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section id="add-task">
+            <h2>Add New Task</h2>
+            <form action="/add" method="post">
+                <label for="title">Title<span class="mandatory">*</span>:</label><br>
+                <input type="text" id="title" name="title" required><br>
+                <label for="description">Description<span class="mandatory">*</span>:</label><br>
+                <textarea id="description" name="description" required></textarea><br>
+                <button type="submit">Add Task</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
